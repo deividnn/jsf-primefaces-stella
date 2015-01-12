@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:messages/>
+
+            <p:panel header="Valor por extenso em reais">
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Valor:" for="valor"/>
+                    <p:inputText value="#{bean.valor}"
+                                 id="valor"
+                                 maxlength="15"
+                                 required="true">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                    </p:inputText>
+
+                    <p:commandButton value="ok"
+                                     update="@form"
+                                     actionListener="#{bean.porExtenso()}"/>
+                </p:panelGrid>
+                <h:outputText value="#{bean.extenso}"/>
+            </p:panel>
+
+        </h:form>
+
+        <h:form>
+            <p:messages/>
+
+            <p:panel header="Validar CPF">
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="CPF:" for="cpf"/>
+                    <p:inputMask mask="999.999.999-99" value="#{bean.cpf}"
+                                 id="cpf"
+                                 required="true"/>
+
+                    <p:outputLabel value="CNPJ:" for="cnpj"/>
+                    <p:inputMask mask="99.999.999/9999-99" value="#{bean.cnpj}"
+                                 id="cnpj"
+                                 required="true"/>
+
+                    <p:commandButton value="ok"
+                                     update="@form"
+                                     actionListener="#{bean.validarCPNJCPF()}"/>
+                </p:panelGrid>
+                <h:outputText value="#{bean.avisoCPF}"/>
+                <br/>
+                <h:outputText value="#{bean.avisoCNPJ}"/>
+            </p:panel>
+
+        </h:form>
+
+        <h:form>
+            <p:messages/>
+
+            <p:panel header="Gerar Boleto">
+                <p:commandButton value="gerar"
+                                 update="@form"
+                                 actionListener="#{bean.gerarBoleto()}"/>
+                <br/>
+                boleto gerado em: #{bean.boleto}
+            </p:panel>
+        </h:form>
+        
+         <h:form>
+            <p:messages/>
+
+            <p:panel header="Gerar Carne">
+                <p:commandButton value="gerar"
+                                 update="@form"
+                                 actionListener="#{bean.gerarCarne()}"/>
+                <br/>
+                carne gerado em: #{bean.carne}
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+
