@@ -60,10 +60,22 @@
         <h:form>
             <p:messages/>
 
-            <p:panel header="Gerar Boleto">
+            <p:panel header="Gerar Boleto brasil">
                 <p:commandButton value="gerar"
                                  update="@form"
                                  actionListener="#{bean.gerarBoleto()}"/>
+                <br/>
+                boleto gerado em: #{bean.boleto}
+            </p:panel>
+        </h:form>
+        
+          <h:form>
+            <p:messages/>
+
+            <p:panel header="Gerar boleto caixa">
+                <p:commandButton value="gerar"
+                                 update="@form"
+                                 actionListener="#{bean.gerarBoletocaixa()}"/>
                 <br/>
                 boleto gerado em: #{bean.boleto}
             </p:panel>

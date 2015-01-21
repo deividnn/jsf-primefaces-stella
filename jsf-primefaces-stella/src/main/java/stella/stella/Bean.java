@@ -13,6 +13,7 @@ import br.com.caelum.stella.boleto.Endereco;
 import br.com.caelum.stella.boleto.Pagador;
 import br.com.caelum.stella.boleto.bancos.BancoDoBrasil;
 import br.com.caelum.stella.boleto.bancos.Bradesco;
+import br.com.caelum.stella.boleto.bancos.Caixa;
 import br.com.caelum.stella.boleto.bancos.Santander;
 import br.com.caelum.stella.boleto.transformer.GeradorDeBoleto;
 import br.com.caelum.stella.inwords.FormatoDeReal;
@@ -88,7 +89,6 @@ public class Bean implements Serializable {
         validarCNPJ();
     }
 
-
     public void gerarBoleto() {
         Datas datas = Datas.novasDatas()
                 .comDocumento(1, 5, 2008)
@@ -139,14 +139,14 @@ public class Bean implements Serializable {
                 .comLocaisDePagamento("local 1", "local 2");
 
         GeradorDeBoleto gerador = new GeradorDeBoleto(boleto2);
-        File pdf = new File(System.getProperty("user.home") + File.separator + "boleto.pdf");
+        File pdf = new File(System.getProperty("user.home") + File.separator + "brasil.pdf");
 
         gerador.geraPDF(pdf.getAbsolutePath());
 
         ServletContext servletContext = (ServletContext) FacesContext.
                 getCurrentInstance().getExternalContext().getContext();
         String absoluteDiskPath = servletContext.getRealPath("/resources/arquivos");
-        File a = new File(absoluteDiskPath + File.separator + "boleto.pdf");
+        File a = new File(absoluteDiskPath + File.separator + "brasil.pdf");
         byte[] bytes = gerador.geraPDF();
         try {
             FileUtils.writeByteArrayToFile(a, bytes);
@@ -231,8 +231,41 @@ public class Bean implements Serializable {
 
         this.carne = pdf.getAbsolutePath();
     }
-    
-    
+
+    public void gerarBoletocaixa() {
+        Datas datas = Datas.novasDatas().comDocumento(22, 04, 2013)
+                .comProcessamento(22, 04, 2013).comVencimento(29, 04, 2013);
+
+        Beneficiario beneficiario = Beneficiario.novoBeneficiario().comNomeBeneficiario("Rodrigo Turini")
+                .comAgencia("2873").comCarteira("1")
+                .comCodigoBeneficiario("2359").comNossoNumero("990000000003994458")
+                .comDigitoNossoNumero("0");
+
+        Pagador pagador = Pagador.novoPagador().comNome("Mario Amaral");
+        Caixa banco = new Caixa();
+        Boleto boletoc = Boleto.novoBoleto().comDatas(datas)
+                .comBeneficiario(beneficiario).comBanco(banco).comPagador(pagador)
+                .comValorBoleto(4016.10).comNumeroDoDocumento("3084373");
+
+        GeradorDeBoleto gerador = new GeradorDeBoleto(boletoc);
+        File pdf = new File(System.getProperty("user.home") + File.separator + "caixa.pdf");
+
+        gerador.geraPDF(pdf.getAbsolutePath());
+
+        ServletContext servletContext = (ServletContext) FacesContext.
+                getCurrentInstance().getExternalContext().getContext();
+        String absoluteDiskPath = servletContext.getRealPath("/resources/arquivos");
+        File a = new File(absoluteDiskPath + File.separator + "caixa.pdf");
+        byte[] bytes = gerador.geraPDF();
+        try {
+            FileUtils.writeByteArrayToFile(a, bytes);
+        } catch (IOException ex) {
+            Logger.getLogger(Bean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        this.boleto = pdf.getAbsolutePath();
+    }
+
     public BigDecimal getValor() {
         return valor;
     }
@@ -296,6 +329,6 @@ public class Bean implements Serializable {
     public void setCarne(String carne) {
         this.carne = carne;
     }
-    
-    
+
+   
 }
